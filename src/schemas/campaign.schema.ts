@@ -4,16 +4,33 @@ import { Document } from 'mongoose';
 @Schema()
 export class Campaign extends Document {
   @Prop({ required: true })
-  name: string;
+  title: string;
 
   @Prop({ required: true })
-  description: string;
-
-  @Prop({ required: true })
-  status: string; // e.g., 'ongoing', 'completed'
+  brand: string;
 
   @Prop({ required: true })
   deadline: Date;
+
+  @Prop({
+    default: [],
+    type: [
+      {
+        influencerId: { type: String, required: true },
+        submission: {
+          link: { type: String, default: '' },
+          status: { type: String, default: 'pending' },
+          submissionDate: { type: Date, default: null },
+        },
+        metrics: {
+          postsSubmitted: { type: Number, default: 0 },
+          postingDates: { type: [Date], default: [] },
+          engagementEstimate: { type: Number, default: 0 },
+        },
+      },
+    ],
+  })
+  influencers: Array<any>;
 }
 
 export const CampaignSchema = SchemaFactory.createForClass(Campaign);
